@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Meu Mundinho 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#ffe6f0;
+      --pink:#ff6aa6;
+      --soft:#ffd9e8;
+      --muted:#ff9dc1;
+      --card:#ffdff0;
+    }
+    * { box-sizing:border-box; scroll-behavior: smooth; }
+    html,body { margin:0; padding:0; font-family:Poppins, sans-serif; background:var(--bg); color:#b02a6f; }
+
+    /* HEADER */
+    header {
+      display:flex; align-items:center; justify-content:center;
+      padding:15px 10px; position:sticky; top:0; background:var(--bg); z-index:100;
+    }
+    .brand {
+      font-family:Pacifico, cursive; color:var(--pink); font-size:28px;
+    }
+    nav { position:absolute; right:20px; top:12px; }
+    nav .btn {
+      background:var(--soft); border-radius:20px; padding:8px 14px; margin:0 4px;
+      font-size:13px; color:var(--pink); border:none; cursor:pointer; transition:0.2s;
+    }
+    nav .btn:hover { background:var(--muted); color:white; }
+
+    /* HERO */
+    .hero {
+      min-height:80vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+      padding:20px;
+    }
+    .subtitle { font-family:Pacifico; font-size:28px; margin-bottom:20px; }
+    .counter-card { background:var(--card); padding:18px; border-radius:14px; display:inline-block; box-shadow:0 6px 18px rgba(224,68,139,0.12); }
+    .numbers { display:flex; gap:12px; }
+    .box { min-width:68px; padding:12px 10px; border-radius:10px; background:#fff; }
+    .n { font-weight:700; font-size:22px; color:#d0246a; }
+    .label { font-size:11px; color:#ff8fb6; margin-top:6px; }
+    .caption { margin-top:14px; color:#ff83b0; font-size:15px; }
+
+    /* TIMELINE */
+    .timeline { max-width:900px; margin:0 auto; padding:50px 20px; }
+    .timeline-item {
+      display:flex; align-items:center; margin-bottom:60px; opacity:0; transform:translateY(20px);
+      transition:all 0.6s ease;
+    }
+    .timeline-item.visible { opacity:1; transform:translateY(0); }
+    .timeline-item.left { flex-direction:row; }
+    .timeline-item.right { flex-direction:row-reverse; }
+    .timeline-text {
+      background:var(--card); padding:18px; border-radius:10px; max-width:400px; box-shadow:0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    /* MEUS SONHOS */
+    #meus-sonhos {
+      max-width: 800px;
+      margin: 40px auto;
+      background: var(--card);
+      padding: 25px 30px;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(224,68,139,0.12);
+      color: #b02a6f;
+      font-size: 16px;
+      line-height: 1.5;
+      white-space: pre-line; /* preserva quebras de linha */
+    }
+
+    /* CARROSSEL DE FOTOS */
+    #fotos {
+      max-width: 800px;
+      margin: 40px auto 80px auto;
+      background: var(--card);
+      padding: 20px 30px;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(224,68,139,0.12);
+      text-align: center;
+      position: relative;
+      color: #b02a6f;
+    }
+    #fotos h2 {
+      font-family: Pacifico, cursive;
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: var(--pink);
+    }
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background: white;
+      max-width: 100%;
+      height: 450px;
+      margin: 0 auto;
+    }
+    .carousel-slide {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      height: 100%;
+    }
+    .carousel-slide img {
+      width: 100%;
+      object-fit: cover;
+      border-radius: 14px;
+      user-select: none;
+      pointer-events: none;
+      height: 450px;
+      transition: transform 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease;
+    }
+
+    /* Destaque na imagem atual */
+    .carousel-slide img.active {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(224,68,139,0.4);
+      filter: brightness(1) !important;
+    }
+
+    /* Botões transparentes */
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      color: var(--pink);
+      font-size: 32px;
+      opacity: 0.6;
+      transition: opacity 0.3s ease, color 0.3s ease;
+      user-select: none;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 0 1px #b02a6f);
+    }
+    .carousel-btn:hover {
+      opacity: 1;
+      color: var(--muted);
+    }
+    #prevBtn {
+      left: 15px;
+    }
+    #nextBtn {
+      right: 15px;
+    }
+
+    /* HEARTS */
+    .heart {
+      position:fixed; top:-40px; pointer-events:none; z-index:2; opacity:0.95;
+      transform-origin:center; display:inline-block;
+    }
+
+    /* RESPONSIVO */
+    @media (max-width:700px) {
+      .timeline-item { flex-direction:column !important; text-align:center; }
+      .carousel-container {
+        height: 280px;
+      }
+      .carousel-slide img {
+        height: 280px;
+      }
+      nav { position: static; margin-top: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">Meu Mundinho 💖</div>
+    <nav>
+      <button class="btn" onclick="document.getElementById('inicio').scrollIntoView({behavior:'smooth'})">Início</button>
+      <button class="btn" onclick="document.getElementById('historia').scrollIntoView({behavior:'smooth'})">Nossa História</button>
+      <button class="btn" onclick="document.getElementById('meus-sonhos').scrollIntoView({behavior:'smooth'})">Meus Sonhos</button>
+      <button class="btn" onclick="document.getElementById('fotos').scrollIntoView({behavior:'smooth'})">Fotos</button>
+    </nav>
+  </header>
+
+  <!-- INÍCIO -->
+  <section class="hero" id="inicio">
+    <div class="subtitle">Estamos juntas há...</div>
+    <div class="counter-card">
+      <div class="numbers">
+        <div class="box"><div class="n" id="days">0</div><div class="label">dias</div></div>
+        <div class="box"><div class="n" id="hours">0</div><div class="label">horas</div></div>
+        <div class="box"><div class="n" id="minutes">0</div><div class="label">min</div></div>
+        <div class="box"><div class="n" id="seconds">0</div><div class="label">seg</div></div>
+      </div>
+    </div>
+    <div class="caption">Cada segundo ao seu lado é especial. ❤️</div>
+  </section>
+
+  <!-- NOSSA HISTÓRIA -->
+  <section id="historia" class="timeline">
+    <div class="timeline-item left"><div class="timeline-text">28 de Fevereiro de 2021, foi o dia em que demos match no Tinder, porém né, você vivia sumindo e nem conversava direto comigo.</div></div>
+    <div class="timeline-item right"><div class="timeline-text">05 de Março de 2021, começamos realmente a conversar, e ali já comecei a sentir algo por ti pois você era diferente.</div></div>
+    <div class="timeline-item left"><div class="timeline-text">12 de Março de 2021, foi o dia em que você me pediu em namoro usando uma figurinha de cachorro kkkkk, claro que aceitei né, pois ali já estava me apaixonando por você.</div></div>
+    <div class="timeline-item right"><div class="timeline-text">12 de Junho de 2021, passamos o Dia dos Namorados juntas, você me deu uma cesta da Cacau Show e um polvo fofinho.</div></div>
+    <div class="timeline-item left"><div class="timeline-text">27 de Julho de 2021, você me deu as alianças quando fui te ver em Piracicaba.</div></div>
+    <div class="timeline-item right"><div class="timeline-text">11 de Março de 2022, foi nosso último encontro onde comemoramos nosso um ano de namoro antecipado.</div></div>
+    <div class="timeline-item left"><div class="timeline-text">31 de Janeiro de 2023, o dia do nosso término.</div></div>
+    <div class="timeline-item right"><div class="timeline-text">Durante esse tempo, vez ou outra conversamos até que realmente paramos de nos falar.</div></div>
+    <div class="timeline-item left"><div class="timeline-text">05 de Abril de 2025, voltamos a nos falar e a querer reatar nosso relacionamento, porque em todo esse tempo não deixamos de nos amar.</div></div>
+  </section>
+
+  <!-- MEUS SONHOS -->
+  <section id="meus-sonhos">
+    Desde que nos conhecemos, amor, e começamos a nos envolver, todos os meus sonhos passaram a envolver você.
+    Eu sempre quis que tivéssemos um cantinho para morar juntas, construindo nossas coisas, você seguindo sua carreira e se tornando a dentista incrível que eu sei que será, e eu estudando, aperfeiçoando meus códigos e trabalhando em uma boa empresa.
+
+    Imagino nosso apartamento com a nossa cara, um cachorrinho nos esperando quando chegarmos em casa. Eu te recebendo com beijos e abraços, contando como foi meu dia e perguntando como foi o seu. A gente deitando no sofá para assistir a um filminho e, depois, eu fazendo carinho até você adormecer nos meus braços.
+
+    Quero te acordar com beijos e café na cama. Quero me casar com você, meu amor, e fazer de você a mulher da minha vida e para a minha vida. Não consigo imaginar um futuro sem você ao meu lado.
+
+    Quero ter filhos com você e, quando ficarmos bem velhinhas, comprar uma chácara para descansarmos e curtirmos a vida com calma, longe da correria do dia a dia. Vai ser um lugar perfeito para nossos netos nos visitarem, né amor?
+
+    Minha vida está planejada para ter você em cada parte dela. Eu te amo demais. ❤️
+  </section>
+
+  <!-- FOTOS COM CARROSSEL -->
+  <section id="fotos">
+    <h2>Fotos</h2>
+    <div class="carousel-container">
+      <div class="carousel-slide" id="carousel-slide">
+        <img src="1.webp" alt="Foto 1" />
+        <img src="2.webp" alt="Foto 2" />
+        <img src="3.webp" alt="Foto 3" />
+        <img src="4.webp" alt="Foto 4" />
+      </div>
+      <button class="carousel-btn" id="prevBtn">&#10094;</button>
+      <button class="carousel-btn" id="nextBtn">&#10095;</button>
+    </div>
+  </section>
+
+  <script>
+    // CONTADOR
+    const startDate = new Date(2021, 3, 12, 0, 0, 0);
+    function updateCounter(){
+      const now = new Date();
+      let diff = Math.max(0, now - startDate);
+      const msInSec = 1000, msInMin = msInSec * 60, msInHour = msInMin * 60, msInDay = msInHour * 24;
+      const days = Math.floor(diff / msInDay); diff -= days * msInDay;
+      const hours = Math.floor(diff / msInHour); diff -= hours * msInHour;
+      const minutes = Math.floor(diff / msInMin); diff -= minutes * msInMin;
+      const seconds = Math.floor(diff / msInSec);
+      document.getElementById('days').textContent = days;
+      document.getElementById('hours').textContent = String(hours).padStart(2,'0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2,'0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2,'0');
+    }
+    setInterval(updateCounter, 1000); updateCounter();
+
+    // ANIMAÇÃO TIMELINE
+    const items = document.querySelectorAll('.timeline-item');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('visible'); } });
+    }, { threshold: 0.1 });
+    items.forEach(item => observer.observe(item));
+
+    // CORAÇÕES
+    const heartPath = 'M10 3.22c-1.9-1.77-4.98-1.6-6.8.38C1.56 6.02 1.4 8.9 3.3 10.67L10 17l6.7-6.33c1.9-1.77 1.74-4.65-.9-6.07-1.82-1.01-4.9-1.15-6.8.62z';
+    function makeHeart(){
+      const heart = document.createElement('div'); heart.className = 'heart';
+      const size = Math.random() * 24 + 18, left = Math.random() * 100, rotate = (Math.random() * 60) - 30, duration = Math.random() * 6 + 6;
+      heart.style.left = left + 'vw'; heart.style.width = size + 'px'; heart.style.height = size + 'px';
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('viewBox','0 0 20 20'); svg.setAttribute('width','100%'); svg.setAttribute('height','100%');
+      const path = document.createElementNS('http://www.w3.org/2000/svg','path'); path.setAttribute('d', heartPath); path.setAttribute('fill', '#ff7bb3');
+      svg.appendChild(path); heart.appendChild(svg); document.body.appendChild(heart);
+      heart.animate([{ transform: `translateY(-40px) rotate(${rotate}deg)`, opacity: 1 }, { transform: `translateY(${window.innerHeight+100}px) rotate(${rotate+20}deg)`, opacity: 0 }],
+        { duration: duration*1000, easing:'linear' });
+      setTimeout(()=> heart.remove(), duration*1000);
+    }
+    setInterval(makeHeart, 900);
+
+    // CARROSSEL JS
+    const carouselSlide = document.getElementById('carousel-slide');
+    const images = carouselSlide.querySelectorAll('img');
+    let currentIndex = 0;
+
+    function showImage(index) {
+      if(index < 0) {
+        currentIndex = images.length - 1;
+      } else if(index >= images.length) {
+        currentIndex = 0;
+      } else {
+        currentIndex = index;
+      }
+      const offset = -currentIndex * 100;
+      carouselSlide.style.transform = `translateX(${offset}%)`;
+
+      // Atualiza a classe active para destacar a imagem atual
+      images.forEach(img => img.classList.remove('active'));
+      images[currentIndex].classList.add('active');
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      showImage(currentIndex - 1);
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      showImage(currentIndex + 1);
+    });
+
+    showImage(0); // mostra a primeira imagem ao carregar
+  </script>
+</body>
+</html>
